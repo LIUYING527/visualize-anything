@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="zh-CN">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Visualize Anything · 全球 AI 发展</title>
+<style>
+:root{color-scheme:dark;background:#101519;color:#eff3ef;font:16px system-ui,sans-serif}main{max-width:920px;margin:auto;padding:clamp(20px,6vw,64px)}h1{font-size:clamp(32px,6vw,60px);margin:12px 0}p{line-height:1.65;color:#afbdc2}a,.brand{color:#86efc3}.brand{font:14px monospace}section{margin:24px 0;padding:20px;border:1px solid #34434a;border-radius:12px;background:#192227}label{display:block}.row{display:grid;grid-template-columns:90px 1fr 76px;gap:8px;align-items:center;margin:10px 0}meter{width:100%;height:22px;accent-color:#86efc3}select{font:inherit;padding:7px;border-radius:6px}h2{margin:0 0 12px}
+</style>
+<main>
+<header><div class="brand">VISUALIZE ANYTHING</div><h1>全球 AI 发展的三个切面</h1><p>2024 年历史快照 · 依据 Stanford HAI 2025 AI Index</p></header>
+<section><h2>模型研发与资金流向</h2><label>比较指标 <select id="metric"><option value="models">有代表性的 AI 模型数量</option><option value="investment">AI 私人投资</option></select></label><div id="comparison" aria-live="polite"></div></section>
+<section><h2>组织采用率</h2><p>受访组织报告使用 AI 的比例上升了 23 个百分点。</p><div class="row"><span>2023</span><meter value="55" max="100" aria-label="2023 年组织采用率"></meter><strong>55%</strong></div><div class="row"><span>2024</span><meter value="78" max="100" aria-label="2024 年组织采用率"></meter><strong>78%</strong></div><p>调查结果反映受访组织，使用比例不可直接外推至全球所有企业。<a href="https://hai.stanford.edu/ai-index/2025-ai-index-report">Stanford HAI 报告摘要</a></p></section>
+</main>
+<script>
+const metrics = {
+  models: {
+    data: [['美国', 40], ['中国', 15], ['欧洲', 3]],
+    unit: ' 个',
+    scope: '报告摘要列出的三个地区。按研发机构所在地统计，欧洲为合计。',
+    source: 'https://hai.stanford.edu/ai-index/2025-ai-index-report/research-and-development'
+  },
+  investment: {
+    data: [['美国', 109.08], ['中国', 9.29], ['英国', 4.52], ['瑞典', 4.34], ['加拿大', 2.89]],
+    unit: ' 十亿美元',
+    scope: '按报告图 4.3.8 展示投资额最高的五个国家。',
+    source: 'https://hai.stanford.edu/assets/files/hai_ai_index_report_2025.pdf'
+  }
+};
+const select = document.getElementById('metric');
+function render() {
+  const metric = metrics[select.value];
+  const max = Math.max(...metric.data.map(([, value]) => value));
+  document.getElementById('comparison').innerHTML = metric.data.map(([name, value]) =>
+    '<div class="row"><span>' + name + '</span><meter aria-label="' + name +
+    '" value="' + value + '" max="' + max + '"></meter><strong>' + value +
+    '</strong></div>').join('') + '<p>单位' + metric.unit + '。' + metric.scope +
+    ' <a href="' + metric.source + '">查看数据来源</a></p>';
+}
+select.addEventListener('change', render);
+render();
+</script>
+</html>

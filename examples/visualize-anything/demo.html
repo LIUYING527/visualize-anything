@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="zh-CN">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Visualize Anything · 评测分析</title>
+<style>
+:root{color-scheme:dark;font:16px system-ui,sans-serif;background:#101519;color:#eff3ef;--muted:#a3b1b7;--line:#34434a;--mint:#86efc3;--rose:#ffa393}
+*{box-sizing:border-box}body{margin:0}main{max-width:1060px;margin:auto;padding:clamp(22px,6vw,72px)}header{border-bottom:1px solid var(--line);padding-bottom:24px}.brand{color:var(--mint);font:14px ui-monospace,monospace}h1{font-size:clamp(32px,6vw,62px);margin:14px 0;letter-spacing:-.04em}h2{font-size:21px}p,small{color:var(--muted);line-height:1.6}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:24px 0}.card,section{background:#192227;border:1px solid var(--line);border-radius:12px;padding:clamp(12px,2vw,24px)}.card strong{display:block;font-size:clamp(21px,4vw,34px);margin-top:6px}section{margin:16px 0}.row{width:100%;display:grid;grid-template-columns:90px 1fr 78px;gap:8px;align-items:center;text-align:left;margin:5px 0;background:#202c32}.track{position:relative;height:18px;background:linear-gradient(90deg,transparent calc(50% - 1px),#778990 50%,transparent calc(50% + 1px))}.bar{position:absolute;height:12px;top:3px;border-radius:3px}.pos{color:var(--mint)}.neg{color:var(--rose)}.bar.pos{background:var(--mint)}.bar.neg{background:var(--rose)}button,select{font:inherit;color:inherit;border:1px solid var(--line);border-radius:7px;padding:8px;background:#202c32}button{cursor:pointer}button[aria-pressed=true]{border-color:var(--mint)}button:focus-visible,select:focus-visible{outline:2px solid var(--mint);outline-offset:2px}table{width:100%;border-collapse:collapse;margin-top:12px;text-align:left}th,td{padding:9px 4px;border-bottom:1px solid var(--line)}footer{margin-top:24px}
+</style>
+<main>
+<header><div class="brand">VISUALIZE ANYTHING</div><h1>这次评测，哪里退步了？</h1><p>基线 v1 → 当前 v2 · 固定样本配对 · 模拟数据</p></header>
+<div class="stats">
+<div class="card"><small>当前通过率</small><strong id="rate"></strong></div>
+<div class="card"><small>较基线变化</small><strong id="change"></strong></div>
+<div class="card"><small>配对样本</small><strong id="count"></strong></div>
+</div>
+<p id="finding"></p>
+<section><h2>各任务通过率变化</h2><p>向左表示退步，向右表示提升。选择任务查看样本。</p><div id="chart"></div></section>
+<section><h2 id="detail"></h2><p id="summary" aria-live="polite"></p><label>查看 <select id="filter"><option value="regression">由通过变失败</option><option value="recovery">由失败变通过</option><option value="all">全部样本</option></select></label>
+<table><thead><tr><th scope="col">样本</th><th scope="col">基线</th><th scope="col">当前</th></tr></thead><tbody id="samples"></tbody></table></section>
+<footer><small>数据来自此页面内置的模拟评测记录。每个任务 20 个样本，所有样本都在两次评测中出现。总体通过率按样本计算。</small></footer>
+</main>
+<script>
+const scenarios = [
+  { name: '长文检索', key: 'RET', passed: 17, regressions: 4, recoveries: 1 },
+  { name: '事实问答', key: 'QA', passed: 16, regressions: 2, recoveries: 1 },
+  { name: '结构化输出', key: 'FMT', passed: 15, regressions: 1, recoveries: 1 },
+  { name: '算术推理', key: 'MATH', passed: 14, regressions: 1, recoveries: 3 }
+];
+const tasks = scenarios.map(({name, key, passed, regressions, recoveries}) => {
+  const rows = Array.from({length: 20}, (_, i) => ({
+    id: key + '-' + String(i + 1).padStart(2, '0'),
+    before: i < passed,
+    after: i >= regressions && i < passed + recoveries
+  }));
+  return {name, rows};
+});
+const tally = rows => {
+  const before = rows.filter(row => row.before).length;
+  const after = rows.filter(row => row.after).length;
+  return {before, after, delta: 100 * (after - before) / rows.length};
+};
+const signed = n => (n > 0 ? '+' : '') + n.toFixed(1);
+const byId = id => document.getElementById(id);
+const all = tasks.flatMap(task => task.rows);
+const total = tally(all);
+const sorted = [...tasks].sort((a, b) => tally(a.rows).delta - tally(b.rows).delta);
+const extent = Math.max(1, ...tasks.map(task => Math.abs(tally(task.rows).delta)));
+byId('rate').textContent = (100 * total.after / all.length).toFixed(1) + '%';
+byId('change').textContent = signed(total.delta) + ' pp';
+byId('change').className = total.delta < 0 ? 'neg' : 'pos';
+byId('count').textContent = all.length;
+byId('finding').textContent = sorted[0].name + '下降最多（' + signed(tally(sorted[0].rows).delta) + ' 个百分点）。';
+let selected = sorted[0];
+const buttons = new Map();
+function showDetail() {
+  for (const [task, button] of buttons) button.setAttribute('aria-pressed', String(task === selected));
+  const {rows, name} = selected;
+  const {before, after} = tally(rows);
+  const regressions = rows.filter(row => row.before && !row.after);
+  const recoveries = rows.filter(row => !row.before && row.after);
+  byId('detail').textContent = name + ' · 样本明细';
+  byId('summary').textContent = '通过数 ' + before + ' → ' + after + ' / ' + rows.length + ' · 退步 ' + regressions.length + ' 个 · 恢复 ' + recoveries.length + ' 个';
+  const filters = {regression: regressions, recovery: recoveries, all: rows};
+  const visible = filters[byId('filter').value];
+  byId('samples').innerHTML = visible.length ? visible.map(row =>
+    '<tr><td>' + row.id + '</td><td>' + (row.before ? '通过' : '失败') +
+    '</td><td>' + (row.after ? '通过' : '失败') + '</td></tr>'
+  ).join('') : '<tr><td colspan="3">没有符合条件的样本</td></tr>';
+}
+for (const task of sorted) {
+  const {delta} = tally(task.rows);
+  const width = 50 * Math.abs(delta) / extent;
+  const tone = delta < 0 ? 'neg' : 'pos';
+  const button = document.createElement('button');
+  button.className = 'row';
+  button.innerHTML = '<span>' + task.name + '</span><span class="track" aria-hidden="true"><span class="bar ' + tone +
+    '" style="left:' + (delta < 0 ? 50 - width : 50) + '%;width:' + width +
+    '%"></span></span><span class="' + tone + '">' + signed(delta) + ' pp</span>';
+  button.addEventListener('click', () => { selected = task; showDetail(); });
+  buttons.set(task, button);
+  byId('chart').append(button);
+}
+byId('filter').addEventListener('change', showDetail);
+showDetail();
+</script>
+</html>

@@ -1,4 +1,10 @@
-# Viziverse
+# Visualize Anything
+
+**Turn a question, dataset, or experiment run into visual analysis.**
+
+The [Visualize Anything skill](.agents/skills/visualize-anything/SKILL.md) supports public research, local evaluations, and general visualization. Open this repository in Codex and invoke `$visualize-anything`, or see the [installation instructions and demos](examples/visualize-anything/README.md).
+
+## Viziverse desktop viewer
 
 **Visualize anything that happens in your software — live, locally, and in one place.**
 
