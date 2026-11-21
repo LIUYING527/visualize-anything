@@ -2,7 +2,7 @@ name: CI
 
 on:
   push:
-    branches: [main]
+    branches: [main, visualize-anything-v0.1.0]
   pull_request:
   workflow_dispatch:
 
@@ -36,6 +36,8 @@ jobs:
           node-version: 20
       - name: Test JavaScript SDK
         run: node --test sdk/javascript/test/*.test.js
+      - name: Test Visualize Anything integration and demos
+        run: node --test examples/visualize-anything/integration.test.cjs
 
   viewer:
     runs-on: ubuntu-latest

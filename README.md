@@ -2,7 +2,19 @@
 
 **Turn a question, dataset, or experiment run into visual analysis.**
 
-The [Visualize Anything skill](.agents/skills/visualize-anything/SKILL.md) supports public research, local evaluations, and general visualization. Open this repository in Codex and invoke `$visualize-anything`, or see the [installation instructions and demos](examples/visualize-anything/README.md).
+The [Visualize Anything skill](.agents/skills/visualize-anything/SKILL.md) gathers evidence, chooses views, and checks the result against the source. It can research a public topic, compare local evaluation runs, or visualize a supplied dataset.
+
+## Install and try
+
+Open this repository in Codex. For another project, copy `.agents/skills/visualize-anything` into its `.agents/skills/` directory and start a new session.
+
+- `$visualize-anything Show me the state of AI development worldwide, with comparable indicators and sources.`
+- `$visualize-anything Compare these evaluation runs and show which tasks regressed.`
+- `$visualize-anything Plot the validation curves from this Viziverse export.`
+
+Open the [global AI snapshot](examples/visualize-anything/global-ai.html) or [evaluation drill-down](examples/visualize-anything/demo.html) locally in a browser. The global AI demo uses a dated, sourced dataset. The evaluation demo uses simulated data. Both work offline.
+
+The skill uses the host's browsing tools for public research. The optional command-line helpers require Node.js 20+. Per-example comparisons need scored records with stable IDs. The Viziverse adapter uses the existing viewer parser for history exports and supported logs, so keep the bundled repository layout when using it. See the [Chinese guide and release instructions](examples/visualize-anything/README.md).
 
 ## Viziverse desktop viewer
 
@@ -14,8 +26,8 @@ Instead of building a separate dashboard for every use case, Viziverse aims to p
 
 > **Current status:** early development. The existing desktop viewer and Python SDK are the foundation; the universal adapter and visualization-plugin architecture are the direction of travel, not features that are all complete today.
 
-[![CI](https://github.com/LIUYING527/experiment-lens/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/LIUYING527/experiment-lens/actions/workflows/ci.yml)
-[![Windows installer](https://github.com/LIUYING527/experiment-lens/actions/workflows/windows-installer.yml/badge.svg?branch=main)](https://github.com/LIUYING527/experiment-lens/actions/workflows/windows-installer.yml)
+[![CI](https://github.com/LIUYING527/visualize-anything/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/LIUYING527/visualize-anything/actions/workflows/ci.yml)
+[![Windows installer](https://github.com/LIUYING527/visualize-anything/actions/workflows/windows-installer.yml/badge.svg?branch=main)](https://github.com/LIUYING527/visualize-anything/actions/workflows/windows-installer.yml)
 
 ## The idea
 
