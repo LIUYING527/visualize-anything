@@ -8,7 +8,8 @@ on:
 
 jobs:
   python-sdk:
-    runs-on: ubuntu-latest
+    # Keep a runner with setup-python builds for the supported Python 3.9.
+    runs-on: ubuntu-22.04
     strategy:
       matrix:
         python-version: ["3.9", "3.11", "3.12"]
