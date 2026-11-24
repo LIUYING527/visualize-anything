@@ -6,9 +6,11 @@
 
 直接用 Codex 打开仓库或解压后的发布包即可使用。如果只想装到另一个项目，把 `.agents/skills/visualize-anything` 复制到目标项目的 `.agents/skills/`。打开新会话后，可以用 `$visualize-anything` 显式调用。
 
-- `$visualize-anything 我想看一下全球 AI 发展现状，给我几个可比较的视图。`
-- `$visualize-anything 分析当前评测结果，找出相对基线退步最多的任务，并让我查看逐条结果。`
-- `$visualize-anything 把这份 CSV 的月度趋势和分组差异画出来。`
+- `$visualize-anything 我想看一下全球 AI 发展现状。`
+- `$visualize-anything 看看这次评测哪里退步了。`
+- `$visualize-anything 看看这份 CSV 里有什么值得关注。`
+
+说一句你想看什么就够了。Skill 会根据证据选研究角度、指标和图表，并直接交付交互视图或可打开的 HTML。
 
 联网研究依赖宿主的联网能力。二元评测对比和 Viziverse 导入脚本需要 Node.js 20 或更新版本。
 

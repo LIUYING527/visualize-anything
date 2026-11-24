@@ -8,9 +8,11 @@ The [Visualize Anything skill](.agents/skills/visualize-anything/SKILL.md) gathe
 
 Open this repository in Codex. For another project, copy `.agents/skills/visualize-anything` into its `.agents/skills/` directory and start a new session.
 
-- `$visualize-anything Show me the state of AI development worldwide, with comparable indicators and sources.`
-- `$visualize-anything Compare these evaluation runs and show which tasks regressed.`
-- `$visualize-anything Plot the validation curves from this Viziverse export.`
+- `$visualize-anything Show me the state of AI development worldwide.`
+- `$visualize-anything Where did the latest evaluation regress?`
+- `$visualize-anything Visualize this Viziverse export.`
+
+One sentence is enough. The skill chooses what to investigate and how to present it, then delivers the visualization in chat or as an HTML file.
 
 Open the [global AI snapshot](examples/visualize-anything/global-ai.html) or [evaluation drill-down](examples/visualize-anything/demo.html) locally in a browser. The global AI demo uses a dated, sourced dataset. The evaluation demo uses simulated data. Both work offline.
 
