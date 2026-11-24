@@ -14,6 +14,10 @@ Open this repository in Codex. For another project, copy `.agents/skills/visuali
 
 One sentence is enough. The skill chooses what to investigate and how to present it, then delivers the visualization in chat or as an HTML file.
 
+The release goal is **a visual answer you can check**. For a public question, the reader should be able to trace a claim to the original source and see how recent the underlying observation is. For an evaluation, the reader should be able to trace a regression to aligned run metrics or paired sample IDs. The same one-sentence entry point serves both.
+
+To evaluate that claim, run the same one-line prompts with and without the skill in fresh sessions using the same model and tools. Check whether the answer finds the newest comparable data, links its main claims to evidence, and delivers a readable visual with working drill-down where useful. The bundled demos illustrate the target output. The comparison remains to be run.
+
 Open the [global AI snapshot](examples/visualize-anything/global-ai.html) or [evaluation drill-down](examples/visualize-anything/demo.html) locally in a browser. The global AI demo uses a dated, sourced dataset. The evaluation demo uses simulated data. Both work offline.
 
 The skill uses the host's browsing tools for public research. The optional command-line helpers require Node.js 20+. Per-example comparisons need scored records with stable IDs. The Viziverse adapter uses the existing viewer parser for history exports and supported logs, so keep the bundled repository layout when using it. See the [Chinese guide and release instructions](examples/visualize-anything/README.md).

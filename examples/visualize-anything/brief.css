@@ -1,0 +1,28 @@
+:root {
+  color-scheme: light;
+  background: #f7f5ef;
+  color: #182925;
+  --muted: #4c5d54;
+  --line: #d9ddd1;
+  --mint: #146854;
+  --rose: #9e3e32;
+}
+main { max-width: 900px; margin-inline: auto; }
+header { border-bottom: 2px solid #182925; padding-bottom: 24px; }
+h1 { font-family: Georgia, "Noto Serif CJK SC", "Songti SC", SimSun, serif; }
+section, .card {
+  background: #fffef9;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+}
+p, small { color: var(--muted); }
+a, .brand { color: var(--mint); }
+button, select, .row:is(button) { background: #f2f5ee; }
+select { max-width: 100%; }
+meter { width: 100%; height: 22px; }
+meter::-webkit-meter-optimum-value { background: var(--mint); }
+.source { border-top: 1px solid var(--line); padding-top: 12px; font-size: .875rem; }
+.row { grid-template-columns: minmax(76px, auto) minmax(0, 1fr) auto; }
+@media (max-width: 380px) {
+  .stats { grid-template-columns: 1fr; }
+}

@@ -85,11 +85,12 @@ test('evaluation demo updates task details and filters', () => {
 
 test('global AI demo switches data and source by metric', () => {
   const nodes = loadDemo('global-ai.html', {metric: 'models'});
-  assert.match(nodes.get('comparison').innerHTML, /value="40"/);
-  assert.match(nodes.get('comparison').innerHTML, /research-and-development/);
+  assert.match(nodes.get('comparison').innerHTML, /value="50"/);
+  assert.match(nodes.get('comparison').innerHTML, /chapter_1_research_development/);
   const select = nodes.get('metric');
   select.value = 'investment';
   select.events.change();
-  assert.match(nodes.get('comparison').innerHTML, /value="109.08"/);
-  assert.match(nodes.get('comparison').innerHTML, /hai_ai_index_report_2025.pdf/);
+  assert.match(nodes.get('comparison').innerHTML, /value="285.88"/);
+  assert.match(nodes.get('comparison').innerHTML, /2026-ai-index-report/);
+  assert.match(nodes.get('finding').textContent, /私人 AI 投资/);
 });

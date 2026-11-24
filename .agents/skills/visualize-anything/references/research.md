@@ -1,6 +1,10 @@
 # Visualizing a public topic
 
-For a current-state request, search for recent primary sources and compare publication dates with measurement periods. Use comparable series for comparisons and report units, coverage, observation date, source link, and any exclusions near each view. Keep source-provided categories when definitions differ. Treat unreported values as missing. Separate forecasts from historical observations.
+For a current-state request, use the user's current local date as the research cutoff. Search on each material question, opening the publisher's release index or dataset history to confirm the newest edition you can access. Search separately for releases between that edition and the cutoff, including the current year and month where useful. Search results can surface old editions and recent republications. Confirm dates and values on primary pages.
+
+Use the latest comparable observation for each indicator. A recent report can describe older data, and a newer release can use an incompatible definition. Check both cases before replacing a series. Keep verified newer developments in a distinct, dated section when they matter and cannot be joined to the historical series.
+
+Put the research cutoff on the report and the observation period, units, population or geography, publisher and direct table or section link beside each view. Include publication or update dates when verified. State gaps explicitly, for example “2025 annual data, checked 24 Nov 2026; 2026 comparable annual data unverified.” When browsing is unavailable, label the output as a snapshot of the supplied evidence. Treat unreported values as missing and separate forecasts from observations.
 
 Example request: “我想看一下全球 AI 发展现状。”
 

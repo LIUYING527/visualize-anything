@@ -6,34 +6,42 @@
 <style>
 :root{color-scheme:dark;background:#101519;color:#eff3ef;font:16px system-ui,sans-serif}main{max-width:920px;margin:auto;padding:clamp(20px,6vw,64px)}h1{font-size:clamp(32px,6vw,60px);margin:12px 0}p{line-height:1.65;color:#afbdc2}a,.brand{color:#86efc3}.brand{font:14px monospace}section{margin:24px 0;padding:20px;border:1px solid #34434a;border-radius:12px;background:#192227}label{display:block}.row{display:grid;grid-template-columns:90px 1fr 76px;gap:8px;align-items:center;margin:10px 0}meter{width:100%;height:22px;accent-color:#86efc3}select{font:inherit;padding:7px;border-radius:6px}h2{margin:0 0 12px}
 </style>
+<link rel="stylesheet" href="brief.css">
 <main>
-<header><div class="brand">VISUALIZE ANYTHING</div><h1>全球 AI 发展的三个切面</h1><p>2024 年历史快照 · 依据 Stanford HAI 2025 AI Index</p></header>
-<section><h2>模型研发与资金流向</h2><label>比较指标 <select id="metric"><option value="models">有代表性的 AI 模型数量</option><option value="investment">AI 私人投资</option></select></label><div id="comparison" aria-live="polite"></div></section>
-<section><h2>组织采用率</h2><p>受访组织报告使用 AI 的比例上升了 23 个百分点。</p><div class="row"><span>2023</span><meter value="55" max="100" aria-label="2023 年组织采用率"></meter><strong>55%</strong></div><div class="row"><span>2024</span><meter value="78" max="100" aria-label="2024 年组织采用率"></meter><strong>78%</strong></div><p>调查结果反映受访组织，使用比例不可直接外推至全球所有企业。<a href="https://hai.stanford.edu/ai-index/2025-ai-index-report">Stanford HAI 报告摘要</a></p></section>
+<header><div class="brand">VISUALIZE ANYTHING · 全球 AI</div><h1>AI 在哪里研发、投资和使用？</h1><p>资料核对日期为 <time datetime="2026-11-24">2026 年 11 月 24 日</time>。研发与投资采用可核实的 2025 年度数据，用户采用率采用 Microsoft 的 2026 年 6 月估计。</p></header>
+<section><h2 id="finding"></h2><label>比较指标 <select id="metric"><option value="models">有代表性的 AI 模型数量</option><option value="investment">AI 私人投资</option></select></label><div id="comparison" aria-live="polite"></div></section>
+<section><h2>全球约五分之一的劳动年龄人口使用 AI</h2><p>Microsoft 估计，2026 年 6 月全球使用率为 18.8%。地区之间仍有明显差距。</p>
+<div class="row"><span>全球</span><meter value="18.8" max="100" aria-label="全球 AI 使用率"></meter><strong>18.8%</strong></div>
+<div class="row"><span>全球北方</span><meter value="28.8" max="100" aria-label="全球北方 AI 使用率"></meter><strong>28.8%</strong></div>
+<div class="row"><span>全球南方</span><meter value="16.2" max="100" aria-label="全球南方 AI 使用率"></meter><strong>16.2%</strong></div>
+<p class="source">2026 年 6 月 · 劳动年龄人口估计 · 2026 年 9 月 21 日发布。<a href="https://blogs.microsoft.com/on-the-issues/2026/09/21/the-continued-state-of-global-ai-diffusion-in-2026/">查看 Microsoft AI Economy Institute 来源</a></p></section>
 </main>
 <script>
 const metrics = {
   models: {
-    data: [['美国', 40], ['中国', 15], ['欧洲', 3]],
+    title: '美国和中国的代表性模型数量领先',
+    data: [['美国', 50], ['中国', 30], ['韩国', 5]],
     unit: ' 个',
-    scope: '报告摘要列出的三个地区。按研发机构所在地统计，欧洲为合计。',
-    source: 'https://hai.stanford.edu/ai-index/2025-ai-index-report/research-and-development'
+    scope: '2025 年 · 图 1.1 数量最高的三个国家。模型按作者所属机构所在国家归类，跨国合作可能重复计数。',
+    source: 'https://hai.stanford.edu/assets/files/ai_index_report_2026_chapter_1_research_development.pdf'
   },
   investment: {
-    data: [['美国', 109.08], ['中国', 9.29], ['英国', 4.52], ['瑞典', 4.34], ['加拿大', 2.89]],
+    title: '美国在私人 AI 投资上大幅领先',
+    data: [['美国', 285.88], ['欧洲', 20.92], ['中国', 12.41]],
     unit: ' 十亿美元',
-    scope: '按报告图 4.3.8 展示投资额最高的五个国家。',
-    source: 'https://hai.stanford.edu/assets/files/hai_ai_index_report_2025.pdf'
+    scope: '2025 年 · 报告摘要列出的三个地区。欧洲为地区合计，私人投资口径不涵盖全部政府资金。',
+    source: 'https://hai.stanford.edu/ai-index/2026-ai-index-report#economy'
   }
 };
 const select = document.getElementById('metric');
 function render() {
   const metric = metrics[select.value];
+  document.getElementById('finding').textContent = metric.title;
   const max = Math.max(...metric.data.map(([, value]) => value));
   document.getElementById('comparison').innerHTML = metric.data.map(([name, value]) =>
     '<div class="row"><span>' + name + '</span><meter aria-label="' + name +
     '" value="' + value + '" max="' + max + '"></meter><strong>' + value +
-    '</strong></div>').join('') + '<p>单位' + metric.unit + '。' + metric.scope +
+    '</strong></div>').join('') + '<p class="source">单位' + metric.unit + '。' + metric.scope +
     ' <a href="' + metric.source + '">查看数据来源</a></p>';
 }
 select.addEventListener('change', render);
