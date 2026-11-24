@@ -22,6 +22,8 @@ select { max-width: 100%; }
 meter { width: 100%; height: 22px; }
 meter::-webkit-meter-optimum-value { background: var(--mint); }
 .source { border-top: 1px solid var(--line); padding-top: 12px; font-size: .875rem; }
+dt { margin-top: 16px; }
+dd { margin: 4px 0 0; color: var(--muted); line-height: 1.6; }
 .row { grid-template-columns: minmax(76px, auto) minmax(0, 1fr) auto; }
 @media (max-width: 380px) {
   .stats { grid-template-columns: 1fr; }
